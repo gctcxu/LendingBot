@@ -1,10 +1,13 @@
 package main
 
-import "lending/poloniex"
+import (
+	"lending/kucoin"
+	"lending/poloniex"
+)
 
 func main() {
-	//kucoin.KuLendingMain()
+	kucoin.KucoinLendingMain()
 	poloniex.PoloniexLendingMain()
-
+	select {}
 	//fmt.Println(5e-05 == 5e-05)
 }

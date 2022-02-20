@@ -109,5 +109,4 @@ func PoloniexLendingMain() {
 	})
 
 	scheduler.Start()
-	select {}
 }

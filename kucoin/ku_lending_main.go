@@ -165,5 +165,4 @@ func KucoinLendingMain() {
 	})
 
 	scheduler.Start()
-	select {}
 }
