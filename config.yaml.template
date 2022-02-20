@@ -1,0 +1,12 @@
+kucoin:
+  apiKey: ""
+  apiSecret: ""
+  apiPassphrase: ""
+  sliceSize: 0
+  lendingCurrency: ""
+  term: 0
+poloniex:
+  apiKey: ""
+  apiSecret: ""
+  sliceSize: 0
+  lendingCurrency: ""
