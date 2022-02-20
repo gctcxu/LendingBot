@@ -2,7 +2,6 @@ package kucoin
 
 import (
 	"encoding/json"
-	"fmt"
 	"lending/common"
 
 	"github.com/bitly/go-simplejson"
@@ -86,8 +85,7 @@ func (kuApiService *KuApiService) CreateLendingOrder(currency string, size int, 
 		"dailyIntRate": dailyIntRate,
 		"term":         term,
 	}
+	kuApiService.requester.Post("/api/v1/margin/lend", params)
 
-	res := kuApiService.requester.Post("/api/v1/margin/lend", params)
-	fmt.Println(res)
 	kuApiService.logger.Log("Order Created:", params)
 }

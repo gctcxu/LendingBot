@@ -71,8 +71,8 @@ func PoloniexLendingMain() {
 	scheduler := cron.New(cron.WithSeconds())
 	scheduler.AddFunc(cronRule, func() {
 		balance := poloApiService.GetLendingBalance(common.AppConfig.Poloniex.LendingCurrency)
-		if balance == 0 {
-			poloApiService.logger.Log("Balance 0, check next time")
+		if balance < 1 {
+			poloApiService.logger.Log("Balance is not enough, check next time")
 			return
 		}
 
@@ -86,7 +86,7 @@ func PoloniexLendingMain() {
 		openLendingOrderList := poloApiService.GetOpenOrder(common.AppConfig.Poloniex.LendingCurrency)
 
 		//最少分段數量
-		minNumPiece := math.Ceil(float64(int(balance / float64(common.AppConfig.Kucoin.SliceSize))))
+		minNumPiece := math.Ceil(balance / float64(common.AppConfig.Kucoin.SliceSize))
 
 		if len(openLendingOrderList) > 0 {
 			//掛單數量為最少分段數量 且 最佳利率沒改變 => 則不進行動作

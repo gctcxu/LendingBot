@@ -125,14 +125,13 @@ func KucoinLendingMain() {
 
 	scheduler.AddFunc(cronRule, func() {
 		balance := GetBalance()
-		if balance == 0 {
-			kuApiService.logger.Log("Balance 0, Check next time")
+		if balance < 1 {
+			kuApiService.logger.Log("Balance is not enough, Check next time")
 			return
 		}
 
 		marketInfo := GetBestMarketInfo(common.AppConfig.Kucoin.LendingCurrency)
 		targetDailyIntRate := marketInfo.ShortTerm.DailyIntRate
-
 		if targetDailyIntRate == 0 {
 			kuApiService.logger.Log("Daily Rate 0, there must be something wrong")
 			return
@@ -153,7 +152,7 @@ func KucoinLendingMain() {
 
 			//無任何的區塊可以借出, 直接中止
 		} else if minNumPiece == 0 {
-			kuApiService.logger.Log("There is lending slice, wait for next time")
+			kuApiService.logger.Log("There is no lending slice, wait for next time")
 			return
 		}
 

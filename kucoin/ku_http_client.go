@@ -69,12 +69,20 @@ func (client *KuHttpClient) Call(method string, url string, params map[string]in
 	res_byte, error := ioutil.ReadAll(httpRes.Body)
 
 	if error != nil {
-		fmt.Println(error.Error())
+		fmt.Println(error)
 		return ""
 	}
 
 	res_json, _ := simplejson.NewJson(res_byte)
-	data_byte, _ := res_json.Get("data").MarshalJSON()
+
+	code, _ := res_json.Get("code").String()
+
+	var data_byte []byte
+	if code == "200000" {
+		data_byte, _ = res_json.Get("data").MarshalJSON()
+	} else {
+		fmt.Println(res_json)
+	}
 
 	return string(data_byte)
 }
