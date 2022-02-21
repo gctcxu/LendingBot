@@ -63,7 +63,7 @@ func PoloniexLendingMain() {
 	if isProduction {
 		cronRule = "0 0/10 * * * *"
 	} else {
-		cronRule = "0 0/1 * * * *"
+		cronRule = "0/10 * * * * *"
 	}
 
 	poloniexApyScheduler.StartPollingApy()
