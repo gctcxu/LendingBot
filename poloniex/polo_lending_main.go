@@ -76,7 +76,7 @@ func PoloniexLendingMain() {
 			return
 		}
 
-		targetDailyRate := poloniexApyScheduler.GetMinPay()
+		targetDailyRate := poloniexApyScheduler.GetAvgApy()
 		if targetDailyRate == 0 {
 			poloApiService.logger.Log("Daily Rate 0, there must be something wrong")
 			return

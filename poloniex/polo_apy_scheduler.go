@@ -53,8 +53,8 @@ func (scheduler *PoloApyScheduler) setNewLendingOffer(lendingOfferList []Lending
 
 	scheduler.ApyRecordList = append(scheduler.ApyRecordList, maxApy)
 
-	if len(scheduler.ApyRecordList) >= 100 {
-		scheduler.ApyRecordList = scheduler.ApyRecordList[len(scheduler.ApyRecordList)-100:]
+	if len(scheduler.ApyRecordList) >= 180 {
+		scheduler.ApyRecordList = scheduler.ApyRecordList[len(scheduler.ApyRecordList)-180:]
 	}
 
 	scheduler.save()
@@ -113,6 +113,7 @@ func (scheduler *PoloApyScheduler) StartPollingApy() {
 	cronRule := "0/10 * * * * *"
 	cronScheduler := cron.New(cron.WithSeconds())
 
+	//偵測半小時內的apy,
 	cronScheduler.AddFunc(cronRule, func() {
 		lendingOfferList := poloApiService.GetLendingOfferList("USDT")
 		scheduler.setNewLendingOffer(lendingOfferList)
@@ -121,7 +122,7 @@ func (scheduler *PoloApyScheduler) StartPollingApy() {
 	cronScheduler.Start()
 }
 
-func (scheduler *PoloApyScheduler) GetMaxPay() float64 {
+func (scheduler *PoloApyScheduler) GetMaxApy() float64 {
 	maxApy := 0.0
 
 	for i := 0; i < len(scheduler.ApyRecordList); i++ {
@@ -133,7 +134,7 @@ func (scheduler *PoloApyScheduler) GetMaxPay() float64 {
 	return maxApy
 }
 
-func (scheduler *PoloApyScheduler) GetMinPay() float64 {
+func (scheduler *PoloApyScheduler) GetMinApy() float64 {
 	minApy := 1.0
 
 	for i := 0; i < len(scheduler.ApyRecordList); i++ {
@@ -143,4 +144,14 @@ func (scheduler *PoloApyScheduler) GetMinPay() float64 {
 	}
 
 	return minApy
+}
+
+func (scheduler *PoloApyScheduler) GetAvgApy() float64 {
+	sum := 0.0
+
+	for i := 0; i < len(scheduler.ApyRecordList); i++ {
+		sum += scheduler.ApyRecordList[i]
+	}
+
+	return sum / (float64(len(scheduler.ApyRecordList)))
 }
