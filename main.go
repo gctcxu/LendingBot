@@ -1,12 +1,11 @@
 package main
 
 import (
-	"lending/kucoin"
 	"lending/poloniex"
 )
 
 func main() {
-	kucoin.KucoinLendingMain()
+	//kucoin.KucoinLendingMain()
 	poloniex.PoloniexLendingMain()
 	select {}
 }
