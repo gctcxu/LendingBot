@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"lending/common"
+	"sort"
 
 	"github.com/robfig/cron/v3"
 )
@@ -154,4 +155,12 @@ func (scheduler *PoloApyScheduler) GetAvgApy() float64 {
 	}
 
 	return sum / (float64(len(scheduler.ApyRecordList)))
+}
+
+func (scheduler *PoloApyScheduler) GetNHighestApy(n int) float64 {
+	copyList := scheduler.ApyRecordList
+	sort.Float64s(copyList)
+
+	pos := (1 - 1/float64(n))
+	return copyList[int(float64(len(copyList))*pos)]
 }
