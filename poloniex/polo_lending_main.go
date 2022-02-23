@@ -71,12 +71,8 @@ func PoloniexLendingMain() {
 	scheduler := cron.New(cron.WithSeconds())
 	scheduler.AddFunc(cronRule, func() {
 		balance := poloApiService.GetLendingBalance(common.AppConfig.Poloniex.LendingCurrency)
-		if balance < 1 {
-			poloApiService.logger.Log("Balance is not enough, check next time")
-			return
-		}
 
-		targetDailyRate := poloniexApyScheduler.GetNHighestApy(5)
+		targetDailyRate := poloniexApyScheduler.GetNHighestApy(2)
 		if targetDailyRate == 0 {
 			poloApiService.logger.Log("Daily Rate 0, there must be something wrong")
 			return
@@ -96,15 +92,11 @@ func PoloniexLendingMain() {
 			}
 
 			//無任何的區塊可以借出, 直接中止
-		} else if minNumPiece == 0 {
-			poloApiService.logger.Log("There is lending slice, wait for next time")
-			return
 		}
 
 		BatchCancelLendingOrder(openLendingOrderList)
 		balance = poloApiService.GetLendingBalance(common.AppConfig.Poloniex.LendingCurrency)
 		toSubmitedLendingOrder := SliceLending(balance, 2, targetDailyRate, common.AppConfig.Poloniex.LendingCurrency)
-
 		BatchSubmitLendingOrder(toSubmitedLendingOrder)
 	})
 
