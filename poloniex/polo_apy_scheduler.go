@@ -164,3 +164,11 @@ func (scheduler *PoloApyScheduler) GetNHighestApy(n int) float64 {
 	pos := (1 - 1/float64(n))
 	return copyList[int(float64(len(copyList))*pos)]
 }
+
+func (scheduler *PoloApyScheduler) GetNLowApy(n int) float64 {
+	copyList := scheduler.ApyRecordList
+	sort.Float64s(copyList)
+
+	pos := (1 / float64(n))
+	return copyList[int(float64(len(copyList))*pos)]
+}

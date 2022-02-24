@@ -72,7 +72,7 @@ func PoloniexLendingMain() {
 	scheduler.AddFunc(cronRule, func() {
 		balance := poloApiService.GetLendingBalance(common.AppConfig.Poloniex.LendingCurrency)
 
-		targetDailyRate := poloniexApyScheduler.GetNHighestApy(2)
+		targetDailyRate := poloniexApyScheduler.GetNLowApy(8)
 		if targetDailyRate == 0 {
 			poloApiService.logger.Log("Daily Rate 0, there must be something wrong")
 			return
